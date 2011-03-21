@@ -22,5 +22,4 @@ setup(
     'Operating System :: OS Independent',
     'Programming Language :: Python',
     'Topic :: Software Development :: Libraries :: Python Modules'],
-  packages=['djangojsonrpc'],
-  install_requires=['Django>=1.3'])
+  packages=['djangojsonrpc'])
