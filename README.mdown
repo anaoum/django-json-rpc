@@ -1,0 +1,57 @@
+Django JSON-RPC
+===============
+
+A basic JSON-RPC Implementation for Django powered sites.
+
+Features:
+<ul>
+  <li>Simple, pythonic API</li>
+  <li>Supports JSON-RPC 2.0 Spec</li>
+</ul>
+
+The basic API:
+
+**project/app/views.py**
+
+	from pe.jsonrpc.views import JsonRpcView
+	from pe.jsonrpc.decorators import publicmethod
+
+	class TestRpcMethods(object):
+		namespace = "test"
+		@publicmethod
+		def hello(self, who="World"):
+			return "Hello, %s!" % who
+		@publicmethod
+		def echo(self, value):
+			return value
+	
+	rpc = JsonRpcView.as_view(classes=[TestRpcMethods])
+
+    
+**project/urls.py**
+
+    from django.conf.urls.defaults import *
+    
+    urlpatterns = patterns('', 
+    	(r'^rpc/json/$', 'app.views.rpc'),
+    )
+
+
+**To test your service:**
+You can test the service with jsonrpclib (https://github.com/joshmarshall/jsonrpclib) or similar:
+
+    >>> from jsonrpclib import Server
+
+    >>> s = Server('http://localhost:8000/rpc/json/')
+
+    >>> s.test.hello()
+    u'Hello, World!'
+	
+    >>> s.test.hello('Andrew')
+    u'Hello, Andrew!'
+	
+    >>> s.test.hello(who='Bob')
+    u'Hello, Bob!'
+	
+    >>> s.test.echo('This is a test...')
+    u'This is a test...'
